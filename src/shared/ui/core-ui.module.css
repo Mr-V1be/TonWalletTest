@@ -1,0 +1,184 @@
+.frame {
+  display: grid;
+  gap: 1.75rem;
+  width: min(100%, 64rem);
+}
+
+.frameHeader {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.frameTitle {
+  margin: 0;
+  font-family: var(--font-headline);
+  font-size: clamp(2.35rem, 5vw, 3.65rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+}
+
+.frameLead {
+  margin: 0;
+  color: var(--color-text-muted);
+  max-width: 50rem;
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+.frameBody {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.35rem;
+  background: var(--color-surface-low);
+  border-radius: var(--radius-xl);
+}
+
+.cardWarning {
+  background: rgba(27, 32, 41, 0.96);
+}
+
+.cardWarning .eyebrow {
+  color: var(--color-warning);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--color-text-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.cardTitle {
+  margin: 0;
+  font-family: var(--font-headline);
+  font-size: 1.22rem;
+  line-height: 1.1;
+}
+
+.cardBody {
+  display: grid;
+  gap: 0.75rem;
+  line-height: 1.5;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.6rem;
+  padding: 1rem 1.35rem;
+  border: 0;
+  border-radius: 1rem;
+  font-family: var(--font-headline);
+  font-weight: 800;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    opacity 160ms ease,
+    border-color 160ms ease;
+  cursor: pointer;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.buttonPrimary {
+  background: var(--color-accent);
+  color: white;
+}
+
+.buttonSecondary {
+  background: var(--color-surface-soft);
+  color: var(--color-text);
+}
+
+.buttonQuiet {
+  background: rgba(28, 32, 40, 0.72);
+  color: var(--color-accent-strong);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.85rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.pillNeutral {
+  background: var(--color-surface-soft);
+  color: var(--color-text-muted);
+}
+
+.pillSuccess {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.pillWarning {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.pillDanger {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.field {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.fieldLabel {
+  font-family: var(--font-headline);
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.fieldInput {
+  min-height: 3.65rem;
+  padding: 1rem 1.1rem;
+  background: rgba(28, 32, 40, 0.94);
+  color: var(--color-text);
+  border: 1px solid rgba(63, 72, 81, 0.28);
+  border-radius: 1.2rem;
+  outline: none;
+}
+
+.fieldInput::placeholder {
+  color: var(--color-text-soft);
+}
+
+.fieldInput:focus {
+  border-color: var(--color-accent);
+}
+
+textarea.fieldInput {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.fieldHint {
+  color: var(--color-text-soft);
+  font-size: 0.82rem;
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;family=Inter:wght@100..900&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-tertiary-container": "#432200",
+            "secondary-container": "#284c6a",
+            "surface-dim": "#0f131c",
+            "surface-container-low": "#181c24",
+            "inverse-on-surface": "#2c3039",
+            "outline": "#89929d",
+            "secondary-fixed-dim": "#a7caee",
+            "on-error-container": "#ffdad6",
+            "on-primary-container": "#002d49",
+            "primary": "#96ccff",
+            "surface-container-lowest": "#0a0e16",
+            "on-error": "#690005",
+            "secondary-fixed": "#cee5ff",
+            "on-tertiary": "#4c2700",
+            "surface-container-highest": "#31353e",
+            "on-background": "#dfe2ee",
+            "surface-tint": "#96ccff",
+            "primary-fixed-dim": "#96ccff",
+            "surface": "#0f131c",
+            "tertiary": "#ffb779",
+            "surface-container-high": "#262a33",
+            "on-secondary-fixed": "#001d32",
+            "error-container": "#93000a",
+            "surface-bright": "#353942",
+            "on-secondary-container": "#99bce0",
+            "primary-container": "#0098ea",
+            "tertiary-fixed": "#ffdcc1",
+            "outline-variant": "#3f4851",
+            "on-primary-fixed": "#001d32",
+            "surface-variant": "#31353e",
+            "inverse-primary": "#00639a",
+            "tertiary-fixed-dim": "#ffb779",
+            "tertiary-container": "#d87901",
+            "primary-fixed": "#cee5ff",
+            "on-tertiary-fixed": "#2e1500",
+            "background": "#0f131c",
+            "error": "#ffb4ab",
+            "on-secondary-fixed-variant": "#254a68",
+            "on-primary": "#003353",
+            "surface-container": "#1c2028",
+            "on-surface": "#dfe2ee",
+            "inverse-surface": "#dfe2ee",
+            "on-secondary": "#083350",
+            "on-tertiary-fixed-variant": "#6c3a00",
+            "secondary": "#a7caee",
+            "on-primary-fixed-variant": "#004a76",
+            "on-surface-variant": "#bec7d3"
+          },
+          fontFamily: {
+            "headline": ["Plus Jakarta Sans"],
+            "body": ["Inter"],
+            "label": ["Space Grotesk"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-effect {
+      background: rgba(49, 53, 62, 0.6);
+      backdrop-filter: blur(20px);
+    }
+    .ton-glow {
+      background: linear-gradient(135deg, #0098ea 0%, #96ccff 100%);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased min-h-screen flex flex-col items-center justify-center p-6 sm:p-12 overflow-x-hidden">
+<!-- Background Texture Decoration -->
+<div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/5 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary-container/10 blur-[100px] rounded-full"></div>
+</div>
+<!-- Onboarding Container -->
+<main class="relative z-10 w-full max-w-xl flex flex-col gap-12 text-center">
+<!-- Branding Header -->
+<header class="flex flex-col items-center gap-4">
+<div class="w-20 h-20 rounded-2xl ton-glow flex items-center justify-center shadow-[0_0_40px_rgba(0,152,234,0.3)]">
+<span class="material-symbols-outlined text-white text-5xl" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<div class="mt-4">
+<h1 class="font-headline font-extrabold text-4xl sm:text-5xl tracking-tight text-on-surface">
+          Ethereal Vault
+        </h1>
+<p class="font-label text-primary tracking-[0.2em] mt-2 uppercase text-xs font-semibold">
+          TON Mainnet Protocol
+        </p>
+</div>
+</header>
+<!-- Main Options -->
+<section class="grid grid-cols-1 gap-4">
+<!-- Create New Wallet -->
+<button class="group relative overflow-hidden flex items-center p-6 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all duration-300 border border-transparent hover:border-outline-variant/20">
+<div class="ton-glow w-12 h-12 rounded-lg flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-2xl">add_circle</span>
+</div>
+<div class="ml-6 text-left">
+<h3 class="font-headline font-bold text-lg text-on-surface leading-tight">Create New Wallet</h3>
+<p class="text-on-surface-variant text-sm mt-1">Generate a fresh non-custodial address</p>
+</div>
+<span class="material-symbols-outlined ml-auto text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+<!-- Import Existing -->
+<button class="group relative overflow-hidden flex items-center p-6 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all duration-300 border border-transparent hover:border-outline-variant/20">
+<div class="bg-surface-container-highest w-12 h-12 rounded-lg flex items-center justify-center text-on-surface shrink-0 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-2xl">cloud_download</span>
+</div>
+<div class="ml-6 text-left">
+<h3 class="font-headline font-bold text-lg text-on-surface leading-tight">Import Existing</h3>
+<p class="text-on-surface-variant text-sm mt-1">Restore using your 24-word recovery phrase</p>
+</div>
+<span class="material-symbols-outlined ml-auto text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+</section>
+<!-- Safety First Tip Box -->
+<section class="relative">
+<div class="glass-effect rounded-2xl p-8 border border-outline-variant/10 text-left overflow-hidden">
+<!-- Abstract Decoration -->
+<div class="absolute -top-12 -right-12 w-32 h-32 bg-tertiary-container/5 rounded-full blur-2xl"></div>
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<div class="space-y-3">
+<h4 class="font-headline font-bold text-tertiary text-sm tracking-wide uppercase">Safety First</h4>
+<p class="text-on-surface text-sm leading-relaxed">
+              Your <span class="font-label font-bold text-on-surface-variant">Seed Phrase</span> is the only way to recover your funds. We do not store it, and it cannot be reset. Never share it with anyone, including Vault support staff.
+            </p>
+<div class="pt-2 flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-surface-container-highest rounded-full text-[10px] font-label text-on-surface-variant tracking-wider uppercase">Offline Storage Recommended</span>
+<span class="px-3 py-1 bg-surface-container-highest rounded-full text-[10px] font-label text-on-surface-variant tracking-wider uppercase">Self-Custodial</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Support/Footer -->
+<footer class="mt-4 opacity-50 flex items-center justify-center gap-6">
+<a class="text-xs font-label hover:text-primary transition-colors uppercase tracking-widest" href="#">Privacy Policy</a>
+<div class="w-1 h-1 bg-outline-variant rounded-full"></div>
+<a class="text-xs font-label hover:text-primary transition-colors uppercase tracking-widest" href="#">Help Center</a>
+<div class="w-1 h-1 bg-outline-variant rounded-full"></div>
+<a class="text-xs font-label hover:text-primary transition-colors uppercase tracking-widest" href="#">v1.2.0</a>
+</footer>
+</main>
+<!-- Side Illustration Image (Floating Background Element) -->
+<div class="fixed bottom-10 left-10 w-48 h-48 opacity-20 hidden lg:block grayscale">
+<img alt="" class="w-full h-full object-contain" data-alt="Abstract geometric shapes floating in 3D space with subtle blue glowing edges and glass textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzjA93gpw3c_32kwP8aNjVPTVtmvpLN4BlTGgeKM1zxmumQPfIE6owmXLqjSmra3Y3lI9vJWf_grpCTVM5EFPXaMZ64JhMKu89h-d93VWnr-4lJpC7h84qh31wrTxtT5MDzOaRi_EqMmklALWiu-U54lT1pPcy55P3XBNZUGK8WcTkDVp_XDGFz-tU6F2AGm_rpZ_2m7MaUJ7_dNdcaIPBdi1HyT-9QkH-7_YNsa-S2sHfRcPZE5qLg_HDAmikuH6L2EEhFRh7DN8"/>
+</div>
+</body></html>

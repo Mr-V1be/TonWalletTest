@@ -1,0 +1,144 @@
+@font-face {
+  font-family: 'Ancage';
+  src: local('Ancage');
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  color-scheme: dark;
+  scrollbar-width: none;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  position: relative;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+body::before,
+body::after {
+  display: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.stack-xs,
+.stack-sm,
+.stack-md,
+.stack-lg {
+  display: grid;
+}
+
+.stack-xs { gap: 0.45rem; }
+.stack-sm { gap: 0.75rem; }
+.stack-md { gap: 1rem; }
+.stack-lg { gap: 1.35rem; }
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.action-rowEqual {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.section-copy,
+.muted {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+.hero-number {
+  margin: 0;
+  font-size: clamp(2.6rem, 14vw, 4.25rem);
+  font-family: var(--font-headline);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+}
+
+.mono-block {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  word-break: break-all;
+}
+
+.error-copy {
+  margin: 0;
+  color: var(--color-danger);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.inline-link,
+.text-button {
+  color: var(--color-accent-strong);
+  font-weight: 700;
+}
+
+.section-title {
+  margin: 0;
+  font-family: var(--font-headline);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.text-button {
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}

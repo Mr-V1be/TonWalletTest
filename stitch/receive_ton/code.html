@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Receive TON - Ethereal Vault</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-container": "#432200",
+              "secondary-container": "#284c6a",
+              "surface-dim": "#0f131c",
+              "surface-container-low": "#181c24",
+              "inverse-on-surface": "#2c3039",
+              "outline": "#89929d",
+              "secondary-fixed-dim": "#a7caee",
+              "on-error-container": "#ffdad6",
+              "on-primary-container": "#002d49",
+              "primary": "#96ccff",
+              "surface-container-lowest": "#0a0e16",
+              "on-error": "#690005",
+              "secondary-fixed": "#cee5ff",
+              "on-tertiary": "#4c2700",
+              "surface-container-highest": "#31353e",
+              "on-background": "#dfe2ee",
+              "surface-tint": "#96ccff",
+              "primary-fixed-dim": "#96ccff",
+              "surface": "#0f131c",
+              "tertiary": "#ffb779",
+              "surface-container-high": "#262a33",
+              "on-secondary-fixed": "#001d32",
+              "error-container": "#93000a",
+              "surface-bright": "#353942",
+              "on-secondary-container": "#99bce0",
+              "primary-container": "#0098ea",
+              "tertiary-fixed": "#ffdcc1",
+              "outline-variant": "#3f4851",
+              "on-primary-fixed": "#001d32",
+              "surface-variant": "#31353e",
+              "inverse-primary": "#00639a",
+              "tertiary-fixed-dim": "#ffb779",
+              "tertiary-container": "#d87901",
+              "primary-fixed": "#cee5ff",
+              "on-tertiary-fixed": "#2e1500",
+              "background": "#0f131c",
+              "error": "#ffb4ab",
+              "on-secondary-fixed-variant": "#254a68",
+              "on-primary": "#003353",
+              "surface-container": "#1c2028",
+              "on-surface": "#dfe2ee",
+              "inverse-surface": "#dfe2ee",
+              "on-secondary": "#083350",
+              "on-tertiary-fixed-variant": "#6c3a00",
+              "secondary": "#a7caee",
+              "on-primary-fixed-variant": "#004a76",
+              "on-surface-variant": "#bec7d3"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Inter"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-effect {
+        backdrop-filter: blur(20px);
+        background: rgba(49, 53, 62, 0.6);
+      }
+      .signature-glow {
+        background: linear-gradient(135deg, #0098ea 0%, #96ccff 100%);
+      }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar -->
+<aside class="h-screen w-72 flex-col fixed left-0 top-0 bg-[#0f131c] flex flex-col p-6 gap-8 font-['Plus_Jakarta_Sans'] antialiased z-40">
+<div class="flex items-center gap-3 px-2">
+<div class="w-10 h-10 rounded-xl signature-glow flex items-center justify-center text-on-primary shadow-[0_0_20px_rgba(0,152,234,0.3)]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<div>
+<h1 class="text-[#0098ea] font-extrabold tracking-tight text-lg leading-tight">Ethereal Vault</h1>
+<p class="text-slate-400 text-xs font-medium">TON Mainnet</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-4 px-4 py-3 text-slate-400 hover:text-white transition-colors hover:bg-[#1c2028] rounded-lg group" href="#">
+<span class="material-symbols-outlined transition-transform group-active:scale-90">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 bg-gradient-to-r from-[#0098ea] to-[#96ccff] text-white rounded-lg shadow-[0_0_20px_rgba(0,152,234,0.3)] scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-medium">Receive</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-slate-400 hover:text-white transition-colors hover:bg-[#1c2028] rounded-lg group" href="#">
+<span class="material-symbols-outlined transition-transform group-active:scale-90">send</span>
+<span class="font-medium">Send</span>
+</a>
+</nav>
+<div class="mt-auto p-4 bg-surface-container-low rounded-xl border-none">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="User Wallet Avatar" class="w-full h-full object-cover" data-alt="minimalist abstract 3D avatar of a digital identity with metallic blue textures and soft studio lighting on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZm_8I863aVy0w7OYNqnHXxZGcWoXrmJS8eAI7sSz-9y6Ryke9H6kCknTDTzX5uzwiCXh-U28xrHEs-sZB2emwQI-DMdjJ8VjNf4q3pLM-6NPqSVfT8W6TaC4352XyvV5WZvVT11CdRfR1tbkrtGFMPsxG7Rk6jE_F-HULiItq1Fi6U7iqUf8SopNriQHyhnwNBoPLu5wFYcLgrqf50ca9p1XU-i85fvtgnWW6S7yK9alHsutm7npqHgE2pBKfrG9e4DnOB8ureWU"/>
+</div>
+<div class="overflow-hidden">
+<p class="text-sm font-bold truncate">0x...49E2</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-widest font-label">Verified Vault</p>
+</div>
+</div>
+<button class="w-full py-2 bg-surface-container-highest text-primary text-xs font-bold rounded-lg hover:bg-surface-bright transition-all">
+                Switch Wallet
+            </button>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-18rem)] z-30 bg-[#181c24]/40 backdrop-blur-xl flex justify-between items-center px-10 py-4">
+<div class="flex items-center gap-2">
+<span class="text-slate-500 font-label text-xs tracking-[0.2em] uppercase">Security Level</span>
+<div class="flex gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-primary/30"></div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-500 hover:text-[#96ccff] cursor-pointer opacity-80 hover:opacity-100 transition-opacity">notifications</span>
+<span class="material-symbols-outlined text-slate-500 hover:text-[#96ccff] cursor-pointer opacity-80 hover:opacity-100 transition-opacity">security</span>
+<span class="material-symbols-outlined text-slate-500 hover:text-[#96ccff] cursor-pointer opacity-80 hover:opacity-100 transition-opacity">settings</span>
+</div>
+<div class="h-6 w-[1px] bg-outline-variant/20"></div>
+<div class="text-primary font-label text-sm font-bold tracking-tight bg-primary/10 px-3 py-1 rounded-full">
+                0x...49E2
+            </div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="ml-72 pt-24 min-h-screen p-10 flex flex-col items-center">
+<!-- Hero Section: Editorial Header -->
+<div class="w-full max-w-4xl mb-12 text-center">
+<span class="font-label text-primary tracking-[0.3em] uppercase text-xs mb-4 block">Inbound Transaction</span>
+<h2 class="font-headline text-5xl font-extrabold text-on-surface tracking-tight mb-2">Receive Assets</h2>
+<div class="flex items-center justify-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">cloud_done</span>
+<p class="text-sm">Only send <span class="text-primary font-bold">TON</span> to this address on the <span class="text-tertiary font-bold underline underline-offset-4 decoration-tertiary/30">Testnet</span> network.</p>
+</div>
+</div>
+<!-- Content Grid (Asymmetric Bento) -->
+<div class="w-full max-w-5xl grid grid-cols-12 gap-6">
+<!-- QR Code Card (Featured) -->
+<div class="col-span-12 md:col-span-5 bg-surface-container-low rounded-3xl p-8 flex flex-col items-center justify-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"></div>
+<div class="relative p-6 bg-white rounded-2xl shadow-2xl mb-6">
+<!-- Representational QR -->
+<div class="w-48 h-48 grid grid-cols-10 gap-0.5 opacity-90">
+<div class="bg-surface col-span-2 row-span-2"></div><div class="bg-white"></div><div class="bg-surface col-span-2"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div>
+<div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div>
+<div class="bg-surface col-span-2 row-span-2"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div>
+<div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div>
+<div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div>
+<div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div>
+<div class="bg-surface col-span-2 row-span-2"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div>
+<div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div><div class="bg-surface"></div><div class="bg-white"></div>
+</div>
+<!-- Center Icon Overlay -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-12 h-12 bg-white rounded-lg p-1">
+<div class="w-full h-full signature-glow rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">token</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="px-6 py-2.5 bg-surface-container-high rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-surface-bright transition-all border border-outline-variant/10">
+<span class="material-symbols-outlined text-lg">share</span>
+                        Share QR
+                    </button>
+<button class="w-11 h-11 bg-surface-container-high rounded-xl flex items-center justify-center hover:bg-surface-bright transition-all border border-outline-variant/10">
+<span class="material-symbols-outlined text-lg">download</span>
+</button>
+</div>
+</div>
+<!-- Address Card -->
+<div class="col-span-12 md:col-span-7 flex flex-col gap-6">
+<!-- Large Address Display -->
+<div class="bg-surface-container rounded-3xl p-10 flex flex-col justify-between flex-grow shadow-xl border-none">
+<div>
+<div class="flex items-center justify-between mb-8">
+<span class="px-3 py-1 bg-primary-container/20 text-primary-container rounded-full text-[10px] font-black uppercase tracking-widest">Your Private Vault</span>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+<span class="text-xs text-on-surface-variant font-medium">Node Syncing</span>
+</div>
+</div>
+<label class="font-label text-slate-500 text-xs uppercase tracking-widest mb-4 block">Public Wallet Address</label>
+<div class="bg-surface-container-lowest p-8 rounded-2xl mb-8 group hover:bg-surface-container-high transition-colors">
+<p class="font-label text-3xl md:text-4xl text-on-surface break-all leading-tight font-bold tracking-tight">
+                                EQC6_n0M_t1L5_Y88P_Q7R9_XvB4_mN6k_vF9p_L0wT_7zR2_pQ9L
+                            </p>
+</div>
+</div>
+<button class="signature-glow w-full py-5 rounded-2xl flex items-center justify-center gap-3 text-on-primary font-headline font-extrabold text-lg shadow-[0_12px_24px_-8px_rgba(0,152,234,0.4)] active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">content_copy</span>
+                        Copy Address
+                    </button>
+</div>
+<!-- Technical Footer Info -->
+<div class="grid grid-cols-2 gap-6">
+<div class="bg-surface-container-low p-6 rounded-2xl">
+<p class="font-label text-[10px] text-slate-500 uppercase tracking-widest mb-1">Asset Type</p>
+<p class="font-headline font-bold text-on-surface">Toncoin (TON)</p>
+</div>
+<div class="bg-surface-container-low p-6 rounded-2xl border-l-4 border-tertiary-container">
+<p class="font-label text-[10px] text-slate-500 uppercase tracking-widest mb-1">Network</p>
+<p class="font-headline font-bold text-tertiary">Testnet v4</p>
+</div>
+</div>
+</div>
+<!-- Secondary Bento Cards -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface-container-low p-6 rounded-2xl flex items-start gap-4">
+<div class="p-3 bg-surface-container-high rounded-xl text-primary">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<div>
+<h4 class="font-bold text-sm mb-1">Secure Custody</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed">Your keys never leave this vault. Encryption is handled at the hardware level.</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-2xl flex items-start gap-4">
+<div class="p-3 bg-surface-container-high rounded-xl text-tertiary">
+<span class="material-symbols-outlined">history</span>
+</div>
+<div>
+<h4 class="font-bold text-sm mb-1">Pending Balance</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed">Transactions typically confirm in under 6 seconds on the TON network.</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-2xl flex items-start gap-4">
+<div class="p-3 bg-surface-container-high rounded-xl text-secondary">
+<span class="material-symbols-outlined">help_center</span>
+</div>
+<div>
+<h4 class="font-bold text-sm mb-1">Network Fees</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed">The sender pays the gas fees. You will receive the exact amount sent.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Visual Decoration -->
+<div class="mt-20 flex flex-col items-center opacity-30">
+<div class="w-px h-16 bg-gradient-to-b from-primary to-transparent"></div>
+<p class="font-label text-[10px] tracking-[0.4em] uppercase mt-4">Powered by Ethereal Protocol</p>
+</div>
+</main>
+<!-- Contextual Glass Toast (Bottom Right) -->
+<div class="fixed bottom-8 right-8 glass-effect p-4 rounded-2xl border-none shadow-2xl flex items-center gap-4 max-w-xs z-50">
+<div class="w-10 h-10 rounded-xl bg-tertiary-container/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<p class="text-[10px] font-black uppercase text-tertiary tracking-widest mb-0.5">Network Alert</p>
+<p class="text-xs font-medium text-on-surface">You are currently using Testnet assets.</p>
+</div>
+</div>
+</body></html>

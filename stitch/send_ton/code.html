@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ethereal Vault - Send TON</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;family=Inter:wght@100..900&amp;family=Space+Grotesk:wght@300..700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-container": "#432200",
+                        "secondary-container": "#284c6a",
+                        "surface-dim": "#0f131c",
+                        "surface-container-low": "#181c24",
+                        "inverse-on-surface": "#2c3039",
+                        "outline": "#89929d",
+                        "secondary-fixed-dim": "#a7caee",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#002d49",
+                        "primary": "#96ccff",
+                        "surface-container-lowest": "#0a0e16",
+                        "on-error": "#690005",
+                        "secondary-fixed": "#cee5ff",
+                        "on-tertiary": "#4c2700",
+                        "surface-container-highest": "#31353e",
+                        "on-background": "#dfe2ee",
+                        "surface-tint": "#96ccff",
+                        "primary-fixed-dim": "#96ccff",
+                        "surface": "#0f131c",
+                        "tertiary": "#ffb779",
+                        "surface-container-high": "#262a33",
+                        "on-secondary-fixed": "#001d32",
+                        "error-container": "#93000a",
+                        "surface-bright": "#353942",
+                        "on-secondary-container": "#99bce0",
+                        "primary-container": "#0098ea",
+                        "tertiary-fixed": "#ffdcc1",
+                        "outline-variant": "#3f4851",
+                        "on-primary-fixed": "#001d32",
+                        "surface-variant": "#31353e",
+                        "inverse-primary": "#00639a",
+                        "tertiary-fixed-dim": "#ffb779",
+                        "tertiary-container": "#d87901",
+                        "primary-fixed": "#cee5ff",
+                        "on-tertiary-fixed": "#2e1500",
+                        "background": "#0f131c",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#254a68",
+                        "on-primary": "#003353",
+                        "surface-container": "#1c2028",
+                        "on-surface": "#dfe2ee",
+                        "inverse-surface": "#dfe2ee",
+                        "on-secondary": "#083350",
+                        "on-tertiary-fixed-variant": "#6c3a00",
+                        "secondary": "#a7caee",
+                        "on-primary-fixed-variant": "#004a76",
+                        "on-surface-variant": "#bec7d3"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ton-glow {
+            background: linear-gradient(135deg, #0098ea 0%, #96ccff 100%);
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased selection:bg-primary-container selection:text-white">
+
+    <!-- SideNavBar Shell -->
+    <aside class="h-screen w-72 flex-col fixed left-0 top-0 bg-[#0f131c] font-['Plus_Jakarta_Sans'] antialiased flex p-6 gap-8 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl ton-glow flex items-center justify-center">
+                <span class="material-symbols-outlined text-on-primary" data-icon="account_balance_wallet">account_balance_wallet</span>
+            </div>
+            <div>
+                <h1 class="text-[#0098ea] font-extrabold tracking-tight text-xl leading-none">Ethereal Vault</h1>
+                <p class="text-slate-500 text-xs mt-1">TON Mainnet</p>
+            </div>
+        </div>
+
+        <nav class="flex flex-col gap-2 mt-4">
+            <!-- Dashboard Tab (Inactive) -->
+            <a href="#" class="flex items-center gap-4 p-3 text-slate-400 hover:text-white transition-colors hover:bg-[#1c2028] rounded-lg group">
+                <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                <span class="font-medium">Dashboard</span>
+            </a>
+            <!-- Receive Tab (Inactive) -->
+            <a href="#" class="flex items-center gap-4 p-3 text-slate-400 hover:text-white transition-colors hover:bg-[#1c2028] rounded-lg group">
+                <span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+                <span class="font-medium">Receive</span>
+            </a>
+            <!-- Send Tab (Active) -->
+            <a href="#" class="flex items-center gap-4 p-3 bg-gradient-to-r from-[#0098ea] to-[#96ccff] text-white rounded-lg shadow-[0_0_20px_rgba(0,152,234,0.3)] scale-95 active:scale-90 transition-transform">
+                <span class="material-symbols-outlined" data-icon="send">send</span>
+                <span class="font-bold">Send</span>
+            </a>
+        </nav>
+
+        <div class="mt-auto p-4 rounded-xl bg-surface-container-low">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-bold truncate">User Wallet Avatar</p>
+                    <p class="text-[10px] font-label text-slate-500 truncate">UQAs...vL4p</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- TopNavBar Shell -->
+    <header class="fixed top-0 right-0 w-[calc(100%-18rem)] z-40 bg-[#0f131c]/80 backdrop-blur-xl flex justify-between items-center px-10 py-4">
+        <div class="flex items-center gap-2">
+            <span class="text-[#0098ea] font-black italic text-lg">Vault</span>
+            <span class="text-slate-500 mx-2">/</span>
+            <span class="text-on-surface font-headline font-bold">Send Assets</span>
+        </div>
+        
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-4">
+                <span class="material-symbols-outlined text-slate-500 hover:text-[#96ccff] cursor-pointer transition-opacity opacity-80 hover:opacity-100" data-icon="notifications">notifications</span>
+                <span class="material-symbols-outlined text-slate-500 hover:text-[#96ccff] cursor-pointer transition-opacity opacity-80 hover:opacity-100" data-icon="security">security</span>
+                <span class="material-symbols-outlined text-slate-500 hover:text-[#96ccff] cursor-pointer transition-opacity opacity-80 hover:opacity-100" data-icon="settings">settings</span>
+            </div>
+            <div class="h-6 w-[1px] bg-outline-variant/30"></div>
+            <div class="font-label text-xs text-[#0098ea] font-bold tracking-widest bg-primary-container/10 px-3 py-1.5 rounded-full">
+                0x...49E2
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Canvas -->
+    <main class="ml-72 pt-24 pb-12 px-10 min-h-screen">
+        <div class="max-w-3xl mx-auto space-y-10">
+            
+            <!-- Hero Heading Section -->
+            <section class="space-y-2">
+                <h2 class="text-display-lg font-headline font-extrabold tracking-tight text-white leading-tight">
+                    Transfer <span class="text-primary">TON</span>
+                </h2>
+                <p class="text-on-surface-variant text-lg max-w-xl">
+                    Securely move your assets across the Open Network. Enter details below to initiate a vault transfer.
+                </p>
+            </section>
+
+            <!-- Transaction Interface -->
+            <div class="grid grid-cols-1 gap-8">
+                
+                <!-- Send Form Container -->
+                <div class="bg-surface-container-low rounded-3xl p-8 space-y-8 relative overflow-hidden">
+                    <!-- Subtle background accent -->
+                    <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+
+                    <!-- Address Poisoning Warning (Visible State) -->
+                    <div class="bg-tertiary-container/10 border border-tertiary/20 rounded-2xl p-5 flex gap-4 items-start">
+                        <div class="bg-tertiary-container rounded-full p-2 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-on-tertiary-container text-xl" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="text-tertiary font-bold font-headline">Possible Address Poisoning Detected!</h4>
+                            <p class="text-on-surface-variant text-sm leading-relaxed">
+                                This address looks very similar to your recent history (ends in <span class="font-label text-white">...9E2A</span>) but has subtle character differences. Please <span class="underline decoration-tertiary/40">double-check every character</span> of the recipient address to prevent permanent loss of funds.
+                            </p>
+                        </div>
+                    </div>
+
+                    <form class="space-y-8">
+                        <!-- Recipient Input Group -->
+                        <div class="space-y-3">
+                            <label class="block text-sm font-headline font-bold text-on-surface-variant px-1" for="recipient">Recipient Address</label>
+                            <div class="relative group">
+                                <input type="text" id="recipient" 
+                                    class="w-full bg-surface-container h-16 px-6 rounded-2xl border-none ring-1 ring-outline-variant/20 focus:ring-2 focus:ring-primary/40 transition-all font-label text-lg placeholder:text-outline/40" 
+                                    placeholder="Enter TON address (EQ... or UQ...)"
+                                    value="UQAs4uW...9E2A">
+                                <div class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                                    <button type="button" class="p-2 hover:bg-surface-container-high rounded-xl text-primary transition-colors">
+                                        <span class="material-symbols-outlined" data-icon="qr_code_scanner">qr_code_scanner</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex justify-between px-1">
+                                <span class="text-[10px] text-outline uppercase tracking-widest font-bold">Verification Pending</span>
+                                <span class="text-[10px] text-tertiary font-bold flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+                                    High Risk Match
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Amount Input Group -->
+                        <div class="space-y-3">
+                            <label class="block text-sm font-headline font-bold text-on-surface-variant px-1" for="amount">Amount (TON)</label>
+                            <div class="relative">
+                                <input type="number" id="amount" 
+                                    class="w-full bg-surface-container h-24 px-6 rounded-2xl border-none ring-1 ring-outline-variant/20 focus:ring-2 focus:ring-primary/40 transition-all font-headline font-black text-4xl placeholder:text-outline/20" 
+                                    placeholder="0.00">
+                                <div class="absolute right-6 top-1/2 -translate-y-1/2">
+                                    <button type="button" class="text-xs font-bold text-primary bg-primary/10 px-3 py-1.5 rounded-lg hover:bg-primary/20 transition-colors uppercase tracking-widest">Max</button>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center px-1">
+                                <p class="text-xs text-on-surface-variant">Available: <span class="font-label text-white">1,452.84 TON</span></p>
+                                <p class="text-xs text-on-surface-variant font-label">≈ $0.00 USD</p>
+                            </div>
+                        </div>
+
+                        <!-- Transaction Summary Card -->
+                        <div class="bg-surface-container-lowest/50 rounded-2xl p-6 space-y-4">
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-on-surface-variant">Network Fee</span>
+                                <span class="font-label text-white">~0.05 TON</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-on-surface-variant">Estimated Time</span>
+                                <span class="text-white">&lt; 30 Seconds</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button type="submit" class="w-full h-16 ton-glow rounded-xl font-headline font-extrabold text-white text-lg flex items-center justify-center gap-3 shadow-xl hover:shadow-primary/20 active:scale-[0.98] transition-all">
+                            Next Step
+                            <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Secondary Info: Recent Destinations (Editorial Pattern) -->
+                <section class="space-y-4">
+                    <h3 class="text-title-md font-headline font-bold px-1">Trusted Recipients</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Recipient Card 1 -->
+                        <div class="bg-surface-container-low p-4 rounded-2xl hover:bg-surface-container-high cursor-pointer transition-all flex items-center gap-4 group">
+                            <div class="w-12 h-12 rounded-full overflow-hidden shrink-0">
+                                <img src="https://openui.fly.dev/openui/64x64.svg?text=👤" alt="Contact Avatar" data-alt="close-up portrait of a digital 3d character avatar with minimalist features on a soft blue background" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-bold text-sm truncate">Main Exchange</h4>
+                                <p class="text-[10px] font-label text-on-surface-variant truncate">EQB3...7K2W</p>
+                            </div>
+                            <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-sm" data-icon="history">history</span>
+                        </div>
+                        <!-- Recipient Card 2 -->
+                        <div class="bg-surface-container-low p-4 rounded-2xl hover:bg-surface-container-high cursor-pointer transition-all flex items-center gap-4 group">
+                            <div class="w-12 h-12 rounded-full overflow-hidden shrink-0">
+                                <img src="https://openui.fly.dev/openui/64x64.svg?text=🏦" alt="Contact Avatar" data-alt="minimalist bank building icon represented as a sleek digital glass sculpture on a dark surface" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-bold text-sm truncate">Hardware Cold Vault</h4>
+                                <p class="text-[10px] font-label text-on-surface-variant truncate">UQCd...0M1X</p>
+                            </div>
+                            <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-sm" data-icon="history">history</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Contextual FAB (Suppressed on Details/Transaction screen according to logic, but since this is the primary 'Send' destination, we keep it as a 'Help' or 'Cancel' anchor) -->
+    <!-- Suppressing main action FAB to focus on form as per instructions -->
+
+</body>
+</html></style></head><body></body></html>

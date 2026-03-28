@@ -1,0 +1,10 @@
+services:
+  ton-wallet:
+    container_name: ton-wallet
+    build:
+      context: ..
+      dockerfile: ./ops/docker/Dockerfile
+      target: production
+    ports:
+      - "8090:80"
+    restart: unless-stopped

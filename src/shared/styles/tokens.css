@@ -1,0 +1,31 @@
+:root {
+  --font-sans: 'Ancage', system-ui, sans-serif;
+  --font-headline: 'Ancage', system-ui, sans-serif;
+  --font-mono: 'Ancage', system-ui, sans-serif;
+  --color-bg: #0f131c;
+  --color-shell: #121722;
+  --color-surface: #1c2028;
+  --color-surface-low: #181c24;
+  --color-surface-soft: #262a33;
+  --color-surface-muted: #0a0e16;
+  --color-accent: #0098ea;
+  --color-accent-soft: #0e3551;
+  --color-accent-strong: #96ccff;
+  --color-success: #8fc4f0;
+  --color-success-soft: #17344b;
+  --color-warning: #ffb779;
+  --color-warning-soft: rgba(216, 121, 1, 0.16);
+  --color-danger: #ffb4ab;
+  --color-danger-soft: rgba(147, 0, 10, 0.28);
+  --color-text: #dfe2ee;
+  --color-text-muted: #bec7d3;
+  --color-text-soft: #89929d;
+  --shadow-soft: none;
+  --shadow-elevated: none;
+  --gradient-accent: #0098ea;
+  --glass-surface: #181c24;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+  --radius-pill: 999px;
+}
