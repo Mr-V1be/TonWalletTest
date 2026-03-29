@@ -6,7 +6,7 @@ import { TransferBroadcastService } from '@/infrastructure/ton/transfer/transfer
 import { TransferReviewService } from '@/infrastructure/ton/transfer/transfer-review-service';
 
 interface TransferServiceDeps {
-  client: TonClient;
+  getClient(): TonClient;
   recipientBook: RecipientBookPort;
   readGateway: BlockchainGateway;
   sessionVault: WalletSessionVaultPort;

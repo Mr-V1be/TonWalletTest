@@ -1,79 +1,80 @@
-import { useState } from 'react';
 import {
   selectSession,
   useWalletSessionStore,
 } from '@/features/unlock-wallet/wallet-session-store';
 import { ReceiveTonQr } from '@/features/receive-ton/receive-ton-qr';
 import { buildAddressExplorerUrl } from '@/shared/config/blockchain-services';
+import { useI18n } from '@/shared/i18n/i18n-provider';
 import { ActionButton } from '@/shared/ui/action-button';
+import { toast } from 'sonner';
 
 export function ReceiveTonPage() {
   const session = useWalletSessionStore(selectSession);
+  const { t } = useI18n();
   const address = session?.meta.address ?? '';
-  const [copyState, setCopyState] = useState<
-    'idle' | 'copied' | 'failed'
-  >('idle');
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(address);
-      setCopyState('copied');
+      toast.success(t('receive.addressCopied'));
     } catch {
-      setCopyState('failed');
+      toast.error(t('receive.clipboardFailed'));
     }
   };
 
   return (
-    <div className="receive-shell">
-      <header className="page-hero page-heroCenter">
-        <p className="page-kicker">Inbound transaction</p>
-        <h1 className="page-title">Receive Assets</h1>
+    <div className="grid gap-6">
+      <header className="grid gap-3 text-center justify-items-center">
+        <h1 className="m-0 font-headline font-extrabold text-[clamp(2.5rem,6vw,4rem)] leading-[0.95] tracking-[-0.06em]">
+          {t('receive.title')}
+        </h1>
       </header>
-      <section className="receive-grid">
+      <section className="grid gap-6 lg:grid-cols-[minmax(0,1.8fr)_minmax(18rem,1fr)] items-start lg:items-stretch">
         <div>{address ? <ReceiveTonQr address={address} /> : null}</div>
-        <div className="stack-lg">
-          <section className="card-shell receive-copyCard">
-            <div className="receive-cardHeader">
-              <span className="receive-badge">TON</span>
-            </div>
-            <div className="stack-sm">
-              <p className="settings-label">
-                Public wallet address
+        <div className="grid gap-5 h-full lg:grid-rows-[1fr_auto]">
+          <section className="relative overflow-hidden bg-surface-low rounded-2xl grid gap-5 p-6 lg:h-full lg:content-start">
+            <div className="grid gap-2">
+              <p className="m-0 text-text-soft font-mono text-[0.72rem] font-bold tracking-[0.24em] uppercase">
+                {t('receive.publicAddress')}
               </p>
-              <div className="receive-addressBox">
-                <p className="mono-block">{address}</p>
+              <div className="p-5 rounded-xl bg-[rgba(10,14,22,0.82)]">
+                <p className="m-0 font-mono text-[0.88rem] leading-[1.6] text-text-muted break-all">
+                  {address}
+                </p>
               </div>
             </div>
-            {copyState === 'copied' ? (
-              <p className="section-copy">Address copied to clipboard.</p>
-            ) : null}
-            {copyState === 'failed' ? (
-              <p className="error-copy">Clipboard access failed in this browser.</p>
-            ) : null}
-            <div className="receive-cardActions">
+            <div className="grid grid-cols-2 gap-3">
               <ActionButton disabled={!address} onClick={handleCopy}>
-                Copy address
+                {t('receive.copyAddress')}
               </ActionButton>
               {address ? (
                 <a
                   href={buildAddressExplorerUrl(address)}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-link"
+                  className="inline-flex items-center justify-center min-h-[45px] px-5 rounded-lg bg-surface-soft text-text font-headline font-extrabold text-center"
                 >
-                  View address in testnet explorer
+                  {t('receive.viewExplorer')}
                 </a>
               ) : null}
             </div>
           </section>
-          <div className="receive-metaGrid">
-            <article className="mini-card">
-              <p className="eyebrow">Asset type</p>
-              <p className="section-title">Toncoin (TON)</p>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-4">
+            <article className="relative overflow-hidden bg-surface-low rounded-2xl p-4">
+              <p className="m-0 text-text-soft font-mono text-[0.72rem] font-extrabold uppercase tracking-[0.18em]">
+                {t('receive.assetType')}
+              </p>
+              <p className="m-0 mt-1 font-headline text-[1.25rem] font-bold tracking-[-0.03em]">
+                {t('receive.toncoin')}
+              </p>
             </article>
-            <article className="mini-card">
-              <p className="eyebrow">Network</p>
-              <p className="section-title">Testnet v4</p>
+            <article className="relative overflow-hidden bg-surface-low rounded-2xl p-4">
+              <p className="m-0 text-text-soft font-mono text-[0.72rem] font-extrabold uppercase tracking-[0.18em]">
+                {t('receive.network')}
+              </p>
+              <p className="m-0 mt-1 font-headline text-[1.25rem] font-bold tracking-[-0.03em]">
+                {t('receive.networkVersion')}
+              </p>
             </article>
           </div>
         </div>

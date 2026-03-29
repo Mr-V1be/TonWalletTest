@@ -104,7 +104,7 @@ function createAppServices(): ServiceBundle {
       recipientBook,
       transfer: {
         testnetTransfer: new TestnetTransferService({
-          client: createToncenterRpcClient(),
+          getClient: createToncenterRpcClient,
           readGateway,
           recipientBook,
           sessionVault,

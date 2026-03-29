@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import styles from '@/shared/ui/core-ui.module.css';
 
 interface ScreenFrameProps {
   children: ReactNode;
@@ -13,14 +12,20 @@ export function ScreenFrame({
   description,
 }: ScreenFrameProps) {
   return (
-    <section className={styles.frame}>
-      <header className={styles.frameHeader}>
-        <h1 className={styles.frameTitle}>{title}</h1>
+    <section className="grid gap-7 w-full max-w-[64rem]">
+      <header className="grid gap-3">
+        <h1 className="m-0 font-headline text-[clamp(2rem,7vw,3rem)] font-extrabold leading-[0.95] tracking-[-0.05em]">
+          {title}
+        </h1>
         {description ? (
-          <p className={styles.frameLead}>{description}</p>
+          <p className="m-0 text-text-muted max-w-[50rem] text-base leading-[1.7]">
+            {description}
+          </p>
         ) : null}
       </header>
-      <div className={styles.frameBody}>{children}</div>
+      <div className="grid gap-5 p-6 bg-surface-low rounded-2xl">
+        {children}
+      </div>
     </section>
   );
 }

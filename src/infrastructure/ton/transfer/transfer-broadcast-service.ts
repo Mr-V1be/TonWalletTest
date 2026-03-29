@@ -10,10 +10,14 @@ import type { WalletSessionVaultPort } from '@/core/application/ports/wallet-ses
 import type { ActiveWalletSession } from '@/core/domain/wallet/active-wallet-session';
 import { waitForTransferConfirmation } from '@/infrastructure/ton/testnet-transfer-confirmation';
 import { deriveWalletContract } from '@/infrastructure/ton/transfer/derive-wallet-contract';
+import {
+  isToncenterRateLimitError,
+  retryOnToncenterRateLimit,
+} from '@/shared/lib/toncenter-rate-limit';
 import type { TransferReview } from '@/shared/lib/transfer-review';
 
 interface TransferBroadcastDeps {
-  client: TonClient;
+  getClient(): TonClient;
   readGateway: BlockchainGateway;
   recipientBook: RecipientBookPort;
   sessionVault: WalletSessionVaultPort;
@@ -37,34 +41,43 @@ export class TransferBroadcastService {
       );
     }
 
-    const previousTopTransaction = await this.deps.readGateway.getTransactions(
-      session.meta.address,
-      1,
-    );
+    const previousTopTransaction =
+      await this.readPreviousTopTransaction(
+        session.meta.address,
+      );
+    const recipientAddress = review.normalizedAddress;
+    const amountTon = review.amountTon;
     const { keyPair, wallet } = await deriveWalletContract(mnemonic);
 
     try {
-      const openedWallet = this.deps.client.open(wallet);
-      const state = await this.deps.client.getContractState(wallet.address);
+      const client = this.deps.getClient();
+      const openedWallet = client.open(wallet);
+      const state = await retryOnToncenterRateLimit(() =>
+        client.getContractState(wallet.address),
+      );
       const seqno =
         state.state === 'uninitialized'
           ? 0
-          : await openedWallet.getSeqno();
+          : await retryOnToncenterRateLimit(() =>
+              openedWallet.getSeqno(),
+            );
 
-      await openedWallet.sendTransfer({
-        messages: [
-          internal({
-            bounce: review.bounce,
-            to: review.normalizedAddress,
-            value: toNano(review.amountTon),
-          }),
-        ],
-        secretKey: keyPair.secretKey,
-        sendMode: SendMode.PAY_GAS_SEPARATELY,
-        seqno,
-      });
+      await retryOnToncenterRateLimit(() =>
+        openedWallet.sendTransfer({
+          messages: [
+            internal({
+              bounce: review.bounce,
+              to: recipientAddress,
+              value: toNano(amountTon),
+            }),
+          ],
+          secretKey: keyPair.secretKey,
+          sendMode: SendMode.PAY_GAS_SEPARATELY,
+          seqno,
+        }),
+      );
       await this.deps.recipientBook.appendRecentRecipient(
-        review.normalizedAddress,
+        recipientAddress,
       );
 
       return {
@@ -78,6 +91,23 @@ export class TransferBroadcastService {
     }
   }
 
+  private async readPreviousTopTransaction(
+    address: string,
+  ) {
+    try {
+      return await this.deps.readGateway.getTransactions(
+        address,
+        1,
+      );
+    } catch (error) {
+      if (isToncenterRateLimitError(error)) {
+        return [];
+      }
+
+      throw error;
+    }
+  }
+
   async waitForTransferConfirmation(input: {
     expectedSeqno: number;
     previousTopTransactionId: string | null;
@@ -86,7 +116,7 @@ export class TransferBroadcastService {
     walletPublicKey?: Uint8Array;
   }) {
     return waitForTransferConfirmation(
-      this.deps.client,
+      this.deps.getClient(),
       this.deps.readGateway,
       this.deps.sessionVault,
       input,

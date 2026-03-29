@@ -5,6 +5,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Toaster } from 'sonner';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ReceiveTonPage } from '@/features/receive-ton/receive-ton-page';
 import { useWalletSessionStore } from '@/features/unlock-wallet/wallet-session-store';
@@ -49,7 +50,12 @@ describe('ReceiveTonPage', () => {
 
   it('copies address and shows explorer link', async () => {
     const user = userEvent.setup();
-    render(<ReceiveTonPage />);
+    render(
+      <>
+        <Toaster />
+        <ReceiveTonPage />
+      </>,
+    );
 
     await user.click(
       screen.getByRole('button', {

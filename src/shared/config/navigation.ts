@@ -1,18 +1,18 @@
 export const appNavItems = [
   {
-    label: 'Dashboard',
+    labelKey: 'nav.wallet',
     to: '/app/wallet',
   },
   {
-    label: 'Send',
-    to: '/app/send',
-  },
-  {
-    label: 'Receive',
+    labelKey: 'nav.receive',
     to: '/app/receive',
   },
   {
-    label: 'Settings',
+    labelKey: 'nav.send',
+    to: '/app/send',
+  },
+  {
+    labelKey: 'nav.settings',
     to: '/app/settings',
   },
 ] as const;

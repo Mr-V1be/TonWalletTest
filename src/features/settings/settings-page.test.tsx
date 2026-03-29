@@ -5,6 +5,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Toaster } from 'sonner';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { AppServices } from '@/app/providers/app-services-provider';
 import { AppServicesProvider } from '@/app/providers/app-services-provider';
@@ -12,6 +13,8 @@ import { BrowserRecipientBookStore } from '@/infrastructure/storage/browser-reci
 import { BrowserWalletStore } from '@/infrastructure/storage/browser-wallet-store';
 import { SettingsPage } from '@/features/settings/settings-page';
 import { useWalletSessionStore } from '@/features/unlock-wallet/wallet-session-store';
+import { readStoredToncenterApiKey } from '@/shared/config/toncenter-config';
+import { shortAddress } from '@/shared/lib/format-address';
 
 vi.mock('@tanstack/react-router', async () => {
   const actual = await vi.importActual<
@@ -90,12 +93,13 @@ describe('SettingsPage', () => {
 
     render(
       <AppServicesProvider services={services}>
+        <Toaster />
         <SettingsPage />
       </AppServicesProvider>,
     );
 
     await user.type(
-      screen.getByLabelText('Add trusted address'),
+      screen.getByPlaceholderText('Paste a TON testnet address'),
       meta.address,
     );
     await user.click(
@@ -110,12 +114,86 @@ describe('SettingsPage', () => {
       ).toBeInTheDocument(),
     );
     expect(
-      screen.getAllByText('Trusted')[0],
+      screen.getByRole('button', {
+        name: 'Hide (1)',
+      }),
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        meta.address,
+        shortAddress(meta.address, 10),
       ),
     ).toBeInTheDocument();
+  });
+
+  it('validates and saves TON Center API key locally', async () => {
+    const user = userEvent.setup();
+    const fetchMock = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(
+        new Response('{}', {
+          status: 200,
+        }),
+      );
+    const apiKey =
+      '646d285beb0d1f61753ac085ac0d1e8c8f9b4682211aa9d61a8c5b6b6464789c';
+    const services: AppServices = {
+      blockchain: {
+        readGateway,
+      },
+      recipientBook,
+      transfer: {
+        testnetTransfer: {
+          broadcastTransfer: vi.fn(),
+          reviewTransfer: vi.fn(),
+          waitForTransferConfirmation: vi.fn(),
+        },
+      },
+      walletCore: {
+        createWallet: vi.fn(),
+        importWallet: vi.fn(),
+        unlockWallet: vi.fn(),
+      },
+    };
+
+    render(
+      <AppServicesProvider services={services}>
+        <Toaster />
+        <SettingsPage />
+      </AppServicesProvider>,
+    );
+
+    await user.type(
+      screen.getByPlaceholderText(
+        'Paste a TON Center testnet API key',
+      ),
+      apiKey,
+    );
+    await user.click(
+      screen.getByRole('button', {
+        name: 'Validate and save key',
+      }),
+    );
+
+    await waitFor(() =>
+      expect(
+        screen.getByText(
+          'TON Center API key saved.',
+        ),
+      ).toBeInTheDocument(),
+    );
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringContaining('/masterchainInfo'),
+      expect.objectContaining({
+        headers: {
+          'X-API-Key': apiKey,
+        },
+      }),
+    );
+    expect(readStoredToncenterApiKey()).toBe(apiKey);
+    expect(
+      screen.getByPlaceholderText(
+        'Paste a TON Center testnet API key',
+      ),
+    ).toHaveValue('');
   });
 });

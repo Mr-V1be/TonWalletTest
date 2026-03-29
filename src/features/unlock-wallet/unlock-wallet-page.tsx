@@ -1,20 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useAppServices } from '@/app/providers/app-services-provider';
-import { MIN_PASSCODE_LENGTH } from '@/core/application/use-cases/passcode-policy';
-import { AuthBrand } from '@/features/unlock-wallet/auth-brand';
 import {
   selectPersistedMeta,
   selectStartSession,
   selectStorageStatus,
   useWalletSessionStore,
 } from '@/features/unlock-wallet/wallet-session-store';
+import { useI18n } from '@/shared/i18n/i18n-provider';
+import { translateErrorMessage } from '@/shared/i18n/translate-error-message';
+import { shortAddress } from '@/shared/lib/format-address';
 import { useAsyncAction } from '@/shared/lib/use-async-action';
 import { ActionButton } from '@/shared/ui/action-button';
 import { ActionLink } from '@/shared/ui/action-link';
-import { InfoCard } from '@/shared/ui/info-card';
-import { ScreenFrame } from '@/shared/ui/screen-frame';
 import { TextField } from '@/shared/ui/text-field';
+import { toast } from 'sonner';
 
 export function UnlockWalletPage() {
   const { walletCore } = useAppServices();
@@ -22,17 +22,24 @@ export function UnlockWalletPage() {
   const persistedMeta = useWalletSessionStore(selectPersistedMeta);
   const storageStatus = useWalletSessionStore(selectStorageStatus);
   const startSession = useWalletSessionStore(selectStartSession);
+  const { t } = useI18n();
   const passcodeRef = useRef('');
   const [passcodeFieldKey, setPasscodeFieldKey] =
     useState(0);
   const unlockAction = useAsyncAction(
     () => walletCore.unlockWallet(passcodeRef.current),
-    'Something went wrong while unlocking the wallet.',
+    t('error.rootFallback'),
   );
 
   useEffect(() => () => {
     passcodeRef.current = '';
   }, []);
+
+  useEffect(() => {
+    if (unlockAction.error) {
+      toast.error(translateErrorMessage(unlockAction.error, t));
+    }
+  }, [unlockAction.error, t]);
 
   const handleUnlock = async () => {
     const result = await unlockAction.run();
@@ -48,51 +55,37 @@ export function UnlockWalletPage() {
   };
 
   return (
-    <div className="auth-shell">
-      <div className="auth-panel auth-panelCompact">
-        <AuthBrand />
-        <ScreenFrame
-          title="Unlock wallet"
-        >
-          <div className="stack-lg">
-            <InfoCard title="Encrypted wallet" eyebrow="Stored locally">
-              <div className="stack-md">
-                {persistedMeta ? (
-                  <p className="mono-block">{persistedMeta.address}</p>
-                ) : storageStatus === 'corrupted' ? (
-                  <p className="error-copy">
-                    Storage is corrupted.
-                  </p>
-                ) : (
-                  <p className="section-copy">No stored wallet.</p>
-                )}
-                <TextField
-                  key={passcodeFieldKey}
-                  label="Passcode"
-                  type="password"
-                  placeholder={`At least ${MIN_PASSCODE_LENGTH} characters`}
-                  autoComplete="current-password"
-                  onChange={(event) => {
-                    unlockAction.clearError();
-                    passcodeRef.current =
-                      event.target.value;
-                  }}
-                />
-                {unlockAction.error ? <p className="error-copy">{unlockAction.error}</p> : null}
-              </div>
-            </InfoCard>
-            <div className="action-rowEqual">
-              <ActionButton
-                disabled={!persistedMeta || unlockAction.isPending || storageStatus === 'corrupted'}
-                onClick={handleUnlock}
-              >
-                {unlockAction.isPending ? 'Unlocking wallet...' : 'Unlock wallet'}
-              </ActionButton>
-              <ActionLink to="/" variant="secondary">Back</ActionLink>
-            </div>
+    <div className="min-h-screen grid place-items-center px-6 py-4">
+      <main className="w-full max-w-[30rem] grid gap-4">
+        <header className="grid justify-items-center text-center">
+          <h1 className="m-0 font-headline text-[clamp(2rem,7vw,3rem)] font-extrabold leading-[0.95] tracking-[-0.05em]">
+            {t('unlock.title')}
+          </h1>
+        </header>
+        <section className="grid gap-4 p-6 bg-surface-low rounded-2xl">
+          <TextField
+            key={passcodeFieldKey}
+            type="password"
+            aria-label={t('unlock.passcode')}
+            placeholder={t('unlock.passcode')}
+            autoComplete="current-password"
+            onChange={(event) => {
+              unlockAction.clearError();
+              passcodeRef.current =
+                event.target.value;
+            }}
+          />
+          <div className="grid gap-3">
+            <ActionButton
+              disabled={!persistedMeta || unlockAction.isPending || storageStatus === 'corrupted'}
+              onClick={handleUnlock}
+            >
+              {unlockAction.isPending ? t('unlock.pending') : t('unlock.unlockWallet')}
+            </ActionButton>
+            <ActionLink to="/" variant="secondary">{t('common.back')}</ActionLink>
           </div>
-        </ScreenFrame>
-      </div>
+        </section>
+      </main>
     </div>
   );
 }

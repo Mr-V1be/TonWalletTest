@@ -4,17 +4,27 @@ import {
   type ReactNode,
 } from 'react';
 import { Outlet } from '@tanstack/react-router';
+import { useI18n } from '@/shared/i18n/i18n-provider';
 
 export function RootLayout() {
+  const { t } = useI18n();
+
   return (
-    <RouteErrorBoundary>
-      <Outlet />
-    </RouteErrorBoundary>
+    <>
+      <RouteErrorBoundary
+        fallbackText={t('error.rootFallback')}
+      >
+        <Outlet />
+      </RouteErrorBoundary>
+    </>
   );
 }
 
 class RouteErrorBoundary extends Component<
-  { children: ReactNode },
+  {
+    children: ReactNode;
+    fallbackText: string;
+  },
   { hasError: boolean }
 > {
   state = { hasError: false };
@@ -33,8 +43,8 @@ class RouteErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <p className="error-copy">
-          Something went wrong. Reload the page.
+        <p className="m-0 text-danger text-[0.92rem] font-bold">
+          {this.props.fallbackText}
         </p>
       );
     }

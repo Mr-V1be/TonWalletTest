@@ -1,17 +1,22 @@
 import { useEffect, useReducer, useRef } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import { useAppServices } from '@/app/providers/app-services-provider';
 import { initialSendTonState, sendTonReducer } from '@/features/send-ton/send-ton-state';
 import type { TransferStage } from '@/features/send-ton/send-ton-types';
 import {
+  selectLockWallet,
   selectSession,
   useWalletSessionStore,
 } from '@/features/unlock-wallet/wallet-session-store';
 import { readError } from '@/shared/lib/read-error';
 import { isAbortError } from '@/shared/utils/is-abort-error';
+import { toast } from 'sonner';
 
 export function useSendTonController() {
   const { transfer } = useAppServices();
+  const navigate = useNavigate();
   const session = useWalletSessionStore(selectSession);
+  const lockWallet = useWalletSessionStore(selectLockWallet);
   const [state, dispatch] = useReducer(sendTonReducer, initialSendTonState);
   const reviewControllerRef = useRef<AbortController | null>(null);
   const sendControllerRef = useRef<AbortController | null>(null);
@@ -111,7 +116,16 @@ export function useSendTonController() {
         return;
       }
 
-      dispatch({ type: 'send-failed', error: readError(error, 'Transfer submission failed.') });
+      const errorMessage = readError(error, 'Transfer submission failed.');
+
+      if (errorMessage.includes('no longer available')) {
+        toast.error('Session expired. Please unlock again.');
+        lockWallet();
+        void navigate({ to: '/unlock' });
+        return;
+      }
+
+      dispatch({ type: 'send-failed', error: errorMessage });
     }
   };
 

@@ -6,5 +6,11 @@ export function buildAddressExplorerUrl(address: string) {
 }
 
 export function buildTransactionExplorerUrl(hash: string) {
-  return `${TONVIEWER_TESTNET_URL}/transaction/${encodeURIComponent(hash)}`;
+  return `${TONVIEWER_TESTNET_URL}/transaction/${encodeURIComponent(extractExplorerTransactionHash(hash))}`;
+}
+
+export function extractExplorerTransactionHash(
+  hash: string,
+) {
+  return hash.split(':', 1)[0] ?? hash;
 }

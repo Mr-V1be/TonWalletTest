@@ -25,6 +25,31 @@ export async function fetchJsonWithSchema<T>(
       signal: requestSignal.signal,
     });
 
+    if (response.status === 429) {
+      await new Promise((r) => setTimeout(r, 3000));
+      const retryResponse = await fetch(input.input, {
+        headers: input.headers,
+        signal: requestSignal.signal,
+      });
+
+      if (!retryResponse.ok) {
+        throw new Error(
+          `${input.label} request failed with status ${retryResponse.status}.`,
+        );
+      }
+
+      const retryJson = await retryResponse.json();
+      const retryParsed = input.schema.safeParse(retryJson);
+
+      if (!retryParsed.success) {
+        throw new Error(
+          `${input.label} returned an unexpected response shape.`,
+        );
+      }
+
+      return retryParsed.data;
+    }
+
     if (!response.ok) {
       throw new Error(
         `${input.label} request failed with status ${response.status}.`,

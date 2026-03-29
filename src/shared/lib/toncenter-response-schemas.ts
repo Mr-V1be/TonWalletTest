@@ -6,9 +6,10 @@ const toncenterMessageSchema = z.object({
     .object({
       decoded: z.unknown().optional(),
     })
+    .nullable()
     .optional(),
   source: z.string().nullable().optional(),
-  value: z.string().optional(),
+  value: z.string().nullable().optional(),
 });
 
 export const toncenterTransactionsResponseSchema =

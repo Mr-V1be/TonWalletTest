@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import type { BlockchainGateway } from '@/core/application/ports/blockchain-gateway';
 
-const SNAPSHOT_REFETCH_INTERVAL_MS = 15_000;
-const TRANSACTIONS_REFETCH_INTERVAL_MS = 20_000;
+const SNAPSHOT_REFETCH_INTERVAL_MS = 30_000;
+const TRANSACTIONS_REFETCH_INTERVAL_MS = 45_000;
 
 export function useWalletSnapshotQuery(
   readGateway: BlockchainGateway,

@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import styles from '@/shared/ui/core-ui.module.css';
 
 type CardTone =
   | 'neutral'
@@ -7,7 +6,7 @@ type CardTone =
 
 interface InfoCardProps {
   children: ReactNode;
-  title: string;
+  title?: string;
   eyebrow?: string;
   tone?: CardTone;
 }
@@ -18,20 +17,31 @@ export function InfoCard({
   eyebrow,
   tone = 'neutral',
 }: InfoCardProps) {
-  const classes = [
-    styles.card,
-    tone === 'warning' ? styles.cardWarning : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
-
   return (
-    <section className={classes}>
+    <section
+      className={[
+        'grid gap-4 p-5 rounded-2xl',
+        tone === 'warning'
+          ? 'bg-[rgba(27,32,41,0.96)]'
+          : 'bg-surface-low',
+      ].join(' ')}
+    >
       {eyebrow ? (
-        <p className={styles.eyebrow}>{eyebrow}</p>
+        <p
+          className={[
+            'm-0 font-mono text-[0.72rem] font-extrabold uppercase tracking-[0.18em]',
+            tone === 'warning' ? 'text-warning' : 'text-text-soft',
+          ].join(' ')}
+        >
+          {eyebrow}
+        </p>
       ) : null}
-      <h2 className={styles.cardTitle}>{title}</h2>
-      <div className={styles.cardBody}>{children}</div>
+      {title ? (
+        <h2 className="m-0 font-headline text-[1.22rem] leading-[1.1]">
+          {title}
+        </h2>
+      ) : null}
+      <div className="grid gap-3 leading-[1.5]">{children}</div>
     </section>
   );
 }

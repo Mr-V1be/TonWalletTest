@@ -1,193 +1,203 @@
 # TON Testnet Wallet
 
-Небольшой browser-only self-custodial web-app кошелька для `TON testnet` без собственного backend.
+Self-custodial web-кошелек для TON testnet. Работает полностью в браузере, без бэкенда.
 
-Приложение позволяет:
-- создать новый testnet-кошелек;
-- импортировать существующий по seed phrase;
-- разблокировать кошелек локальным passcode;
-- увидеть адрес и баланс;
-- увидеть последние транзакции и искать по ним;
-- скопировать адрес на экране `Receive`;
-- показать QR-код для быстрого сканирования адреса;
-- отправить TON на другой адрес;
-- получить предупреждения перед отправкой в рискованных сценариях.
+---
 
-## Стек
-- `React + TypeScript + Vite`
-- `TanStack Router`
-- `TanStack Query`
-- `Zod`
-- `Zustand`
-- `@ton/ton`, `@ton/crypto`
-- `Web Crypto API`
-- `Vitest`
-- `React Testing Library`
+## Быстрый старт
 
-## Запуск
-Требования:
-- `Node.js 24+`
-- `pnpm 10+`
+### Docker (рекомендуется, работает на Linux / macOS / Windows)
 
-Локальная разработка без Docker:
+Нужен только [Docker](https://docs.docker.com/get-docker/). Ничего больше устанавливать не надо.
+
 ```bash
-pnpm install
-pnpm start:local
-```
+# Linux / macOS
+./start.sh
 
-Запуск всего приложения через Docker одной командой:
-```bash
+# Windows
+start.bat
+
+# Или через pnpm (если Node.js установлен)
 pnpm start:all
 ```
 
-Скрипт сам выполнит `docker compose up --build -d`,
-дождется `200 OK` и выведет готовый URL.
+Приложение будет доступно на **http://localhost:8090**
 
-Опциональные env-переменные для локальной настройки:
-- `VITE_TONCENTER_V2_ENDPOINT`
-- `VITE_TONCENTER_V3_ENDPOINT`
-
-Сборка:
 ```bash
-pnpm build
-pnpm preview
-```
-
-Тесты:
-```bash
-pnpm test
-```
-
-Docker:
-```bash
-pnpm docker:up
-pnpm docker:logs
+# Остановить
 pnpm docker:down
+
+# Посмотреть логи
+pnpm docker:logs
 ```
 
-Приложение будет доступно на `http://localhost:8090`.
+### Локальный запуск (для разработки)
 
-## Архитектура
-Проект собран как `modular monolith` с явными границами между слоями:
+Нужен Node.js 20+ и pnpm 9+.
 
-- `src/core/domain` — доменные сущности и value objects
-- `src/core/application` — use cases и порты
-- `src/infrastructure` — адаптеры для TON, storage и crypto
-- `src/features` — пользовательские сценарии и экраны
-- `src/shared` — общий UI, config и стили
-- `src/app` — bootstrap, providers, router и app shell
+```bash
+pnpm install
+pnpm dev
+```
 
-Важные ограничения, которые соблюдаются по коду:
-- `SOLID` как базовый инженерный принцип;
-- не больше `200` строк в одном файле;
-- не больше `7` файлов в одной папке;
-- если файлов становится больше, они группируются в подпапки.
+Приложение будет доступно на **http://localhost:5173**
 
-Дополнительные проектные решения задокументированы в:
-- [product-decisions.md](/home/admin228/Codding/TonWallet/new/product-decisions.md)
-- [architecture-decisions.md](/home/admin228/Codding/TonWallet/new/architecture-decisions.md)
-- [development-plan.md](/home/admin228/Codding/TonWallet/new/development-plan.md)
+Или одной командой (автоматически установит зависимости):
 
-## Как устроено хранение секрета
-- seed phrase хранится только локально в браузере;
-- seed не хранится в открытом виде;
-- для шифрования используется `Web Crypto API` (`PBKDF2 + AES-GCM`);
-- доступ к seed дается через локальный passcode пользователя;
-- unlocked session живет только в памяти текущей вкладки;
-- после `reload` нужен повторный unlock;
-- есть ручной `Lock wallet`;
-- есть auto-lock через `15 минут` бездействия.
-- после серии неверных passcode включается временный unlock backoff.
+```bash
+pnpm start:local
+```
 
-Это осознанный компромисс для тестового задания. Решение не позиционируется как production-grade security model.
+Чтобы открыть доступ по сети (например с телефона):
 
-## Работа с TON
+```bash
+pnpm dev:host
+# Откроется на http://0.0.0.0:3000
+```
 
-- сеть: `TON testnet`
-- wallet contract: `Wallet V5R1`
-- provider: `TON Center testnet`
-- чтение баланса и истории идет через публичный API без приватного ключа в клиентском bundle;
-- подпись транзакции делается локально в браузере;
-- отправка идет через публичный testnet RPC.
+---
 
-## Реализованная логика anti-address-swap
+## Все команды
+
+| Команда | Описание |
+|---|---|
+| `pnpm dev` | Dev-сервер (localhost:5173) |
+| `pnpm dev:host` | Dev-сервер с доступом по сети (0.0.0.0:3000) |
+| `pnpm build` | Проверка типов + production-сборка |
+| `pnpm preview` | Превью production-сборки |
+| `pnpm test` | Запуск всех тестов |
+| `pnpm test:watch` | Тесты в watch-режиме |
+| `pnpm start:local` | Локальный запуск (auto-install + dev) |
+| `pnpm start:all` | Docker-запуск с ожиданием готовности |
+| `pnpm docker:up` | Поднять Docker-контейнер |
+| `pnpm docker:down` | Остановить контейнер |
+| `pnpm docker:logs` | Логи контейнера |
+
+---
+
+## Как пользоваться
+
+1. **Создать кошелек** — нажать "Create a new wallet", задать пароль, **обязательно сохранить seed-фразу**
+2. **Получить тестовые TON** — отправить свой адрес боту https://t.me/testgiver_ton_bot
+3. **Отправить TON** — вкладка Send, вставить адрес получателя, указать сумму, Review transfer, Send TON
+4. **Получить TON** — вкладка Receive, скопировать адрес или показать QR-код
+5. **Импорт кошелька** — на стартовой странице "Import existing wallet", вставить seed-фразу из 24 слов
+
+---
+
+## Стек технологий
+
+| Категория | Технология |
+|---|---|
+| UI | React 19, TypeScript |
+| Сборка | Vite 7 |
+| Стили | Tailwind CSS 4 |
+| Роутинг | TanStack Router |
+| Серверное состояние | TanStack Query |
+| Клиентское состояние | Zustand |
+| Блокчейн | @ton/ton, @ton/crypto |
+| Шифрование | Web Crypto API (PBKDF2 + AES-GCM) |
+| Тесты | Vitest, React Testing Library |
+| Деплой | Docker, Nginx |
+
+---
+
+## Структура проекта
+
+```
+src/
+  app/              — bootstrap, providers, роутер, shell (сайдбар, навигация)
+  core/
+    domain/         — доменные сущности и value objects
+    application/    — use cases и порты (интерфейсы)
+  features/         — страницы и фичи
+    wallet-dashboard/   — главная (баланс, транзакции)
+    send-ton/           — отправка TON
+    receive-ton/        — получение TON (адрес, QR)
+    settings/           — настройки (доверенные адреса, язык, лок)
+    unlock-wallet/      — создание, импорт, разблокировка
+    create-wallet/
+    import-wallet/
+  infrastructure/   — реализации портов
+    ton/            — TON Center API, подпись и отправка транзакций
+    storage/        — localStorage адаптеры
+    crypto/         — Web Crypto шифрование
+  shared/
+    ui/             — UI-компоненты (кнопки, инпуты, пиллы, лого)
+    i18n/           — локализация (EN / RU)
+    styles/         — Tailwind конфиг и глобальные стили
+    lib/            — утилиты
+    config/         — конфигурация API и навигации
+ops/                — Docker (Dockerfile, nginx.conf, compose.yml)
+start.sh            — скрипт запуска для Linux/macOS
+start.bat           — скрипт запуска для Windows
+```
+
+---
+
+## Безопасность
+
+- Seed-фраза хранится только локально в браузере в зашифрованном виде
+- Шифрование: `PBKDF2` (600 000 итераций) + `AES-256-GCM`
+- Доступ к seed — через локальный passcode
+- Unlocked session живет только в памяти текущей вкладки
+- После reload нужен повторный unlock
+- Ручной Lock wallet + auto-lock через 15 минут бездействия
+- Временная блокировка после серии неверных попыток ввода passcode
+
+> Это осознанный компромисс. Решение не позиционируется как production-grade security.
+
+---
+
+## Логика отправки
 
 Перед отправкой приложение:
 
-- нормализует адрес в canonical `testnet user-friendly` формат;
-- блокирует невалидный адрес;
-- блокирует friendly address без `testnet` marker;
-- блокирует некорректную сумму;
-- блокирует отправку, если не хватает баланса с учетом обязательного резерва `0.05 TON`;
-- показывает полный нормализованный адрес на review step;
-- предупреждает для `raw` address;
-- предупреждает для нового адреса без истории;
-- предупреждает для адреса, похожего на недавний;
-- предупреждает при `self-send`;
-- предупреждает для `uninit` recipient.
+- Нормализует адрес в canonical testnet user-friendly формат
+- Блокирует невалидный адрес
+- Блокирует адрес без testnet-маркера
+- Блокирует некорректную сумму
+- Блокирует отправку если не хватает баланса (с учетом резерва 0.05 TON)
+- Предупреждает при отправке на новый/raw/self/uninit адрес
 
-`recent recipients` и `trusted addresses` сохраняются локально и используются в warning-логике.
+Отправка разделена на два шага: **Review transfer** и **Send TON**.
+После отправки — статус в реальном времени (submitting → broadcasted → confirmed / failed).
 
-## Send flow
+---
 
-UX отправки разделен на два шага:
+## TON Center API key
 
-1. `Review transfer`
-2. `Send TON`
+Без API-ключа TON Center сильно ограничивает количество запросов (ошибка 429). Для стабильной работы рекомендуется получить бесплатный ключ:
 
-После подтверждения пользователь получает понятный статус:
+1. Перейти на https://toncenter.com
+2. Нажать "Get API key"
+3. Получить ключ через Telegram-бота [@tonapibot](https://t.me/tonapibot) — выбрать **testnet**
+4. Вставить ключ в приложении: **Settings → TON Center API key → Validate and save**
 
-- preparing/submitting;
-- broadcasted;
-- confirmed;
-- timeout;
-- failed.
+Или через env-переменную (для разработки):
 
-После подтверждения статус-карточка дает прямую ссылку в testnet explorer.
+```env
+VITE_TONCENTER_API_KEY=ваш_ключ_сюда
+```
 
-Подтверждение определяется через `seqno` кошелька и последующий polling новых outgoing транзакций после роста `seqno`.
+Приоритет: локальный ключ (из Settings) > env-переменная > без ключа.
 
-## История транзакций
+---
 
-- на главном экране загружаются последние `20` транзакций;
-- поиск работает по уже загруженному набору;
-- поля поиска: адрес, hash, comment, сумма;
-- есть `Load 20 more`, но общий лимит capped для browser-only режима;
-- доступны ссылки в testnet explorer для транзакции и контрагента.
+## Env-переменные (опционально)
 
-## Дизайн
+```env
+VITE_TONCENTER_V2_ENDPOINT=https://testnet.toncenter.com/api/v2
+VITE_TONCENTER_V3_ENDPOINT=https://testnet.toncenter.com/api/v3
+VITE_TONCENTER_API_KEY=ваш_api_key
+```
 
-Зафиксированные ограничения:
+---
 
-- без обводок;
-- без градиентов;
-- визуально близко к TON;
-- современный, чистый, mobile-first интерфейс.
+## Требования
 
-Практически это выражено через:
+**Локальный запуск:** Node.js 20+, pnpm 9+
 
-- темную Tonkeeper-like палитру;
-- `TON blue` как accent;
-- мягкие тени;
-- color-surface warning cards;
-- минималистичный app shell с нижней навигацией.
+**Docker:** Docker 24+, Docker Compose v2
 
-## Тестирование
-
-- `pnpm test` покрывает use cases, crypto/storage и ключевые UI-сценарии `Receive`, `Send`, `Settings`;
-- `pnpm build` используется как обязательная проверка production-сборки;
-- Docker-сборка повторно использует production build из того же пайплайна.
-
-## Ограничения текущей версии
-
-- сейчас поддерживается один локальный кошелек на браузер;
-- подтверждение отправки не использует backend/trace API и остается browser-only компромиссом;
-- нет полноценного Playwright e2e контура;
-- нет production-grade hardening для secure storage.
-
-## Что можно улучшить дальше
-
-- улучшить confirmation tracking через более строгую trace/hash-based проверку;
-- расширить тесты до более широкого component/e2e уровня;
-- добавить кэш истории и optimistic refresh;
-- при необходимости добавить multi-wallet поддержку.
+**Браузеры:** Chrome 111+, Firefox 128+, Safari 16.4+

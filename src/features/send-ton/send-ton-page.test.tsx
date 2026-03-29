@@ -115,7 +115,7 @@ describe('SendTonPage', () => {
       }),
     );
 
-    await screen.findByText('Confirm transfer');
+    await screen.findByText(/Confirm transfer/);
     expect(
       testnetTransfer.reviewTransfer,
     ).toHaveBeenCalledWith({
